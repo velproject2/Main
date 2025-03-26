@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard</h1>
+        <div class="table-container">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>APX Number</th>
+                        <th>Model Name</th>
+                        <th>Track</th>
+                        <th>Track Number</th>
+                        <th>User</th>
+                        <th>Check-In Date</th>
+                        <th>Check-In Time</th>
+                        <th>Check-Out Date</th>
+                        <th>Check-Out Time</th>
+                        <th>Hours Utilized</th>
+                        <th>Total Price (₹)</th>
+                    </tr>
+                </thead>
+                <tbody id="dashboardTableBody"></tbody>
+            </table>
+        </div>
+        <button onclick="exportToExcel()">Export to Excel</button>
+        <button onclick="clearEntries()">Clear Entries</button>
+        <button onclick="location.href='index.html'">Go Back</button>
+    </div>
+    <script src="./app.js"></script>
+    <script>
+        displayDashboardEntries();
+    </script>
+</body>
+</html>

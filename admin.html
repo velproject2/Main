@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="loginForm" class="container">
+        <h1>Admin Login</h1>
+        <label for="username">Username:</label>
+        <input type="text" id="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+        <button onclick="login()">Login</button>
+        <button onclick="location.href='index.html'">Go Back</button>
+        <p id="loginError" style="color: red; display: none;">Invalid credentials</p>
+    </div>
+    <div id="adminDashboard" class="container" style="display: none;">
+        <h1>Admin Dashboard</h1>
+        <div class="top-right">
+            <button onclick="setGSTRate()">Set GST Rate</button>
+        </div>
+        <p id="currentGSTRate" style="margin: 10px 0;"></p>
+        <label for="trackSelect">Select Track:</label>
+        <select id="trackSelect" onchange="displaySubTracks()">
+            <option value="">--Select Track--</option>
+            <option value="NATRAX">NATRAX</option>
+            <option value="GARC">GARC</option>
+            <option value="WABCO">WABCO</option>
+            <option value="NCAT">NCAT</option>
+            <option value="MSPT">MSPT</option>
+        </select>
+        <div class="table-container">
+            <table id="subTrackTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Sub Track</th>
+                        <th>Current Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="subTrackTableBody"></tbody>
+            </table>
+        </div>
+        <button onclick="location.href='index.html'">Go Back</button>
+    </div>
+    <script src="./app.js"></script>
+</body>
+</html>
