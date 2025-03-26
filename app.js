@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 entry.checkInTime = new Date(`${checkInDate}T${checkInTime}`).toLocaleString();
             }
 
-            fetch('http://localhost:5000/api/checkin', {
+            fetch('https://main-faml.onrender.com/api/checkin', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(entry)
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 entry.checkOutTime = new Date(`${checkOutDate}T${checkOutTime}`).toLocaleString();
             }
 
-            fetch('http://localhost:5000/api/checkout', {
+            fetch('https://main-faml.onrender.com/api/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(entry)
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     window.displayDashboardEntries = function () {
-        fetch('http://localhost:5000/api/entries')
+        fetch('https://main-faml.onrender.com/api/entries')
             .then(response => response.json())
             .then(entries => {
                 const dashboardTableBody = document.getElementById("dashboardTableBody");
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch('http://localhost:5000/api/admin/track-prices')
+        fetch('https://main-faml.onrender.com/api/admin/track-prices')
             .then(response => response.json())
             .then(prices => {
                 subTrackTable.style.display = "table";
@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             console.log(`Updating price for ${track} - ${subTrack} to ${priceValue}`);
-            fetch('http://localhost:5000/api/admin/track-prices', {
+            fetch('https://main-faml.onrender.com/api/admin/track-prices', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ track, subTrack, price: priceValue })
@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.setGSTRate = function () {
         const gstRate = prompt("Enter GST rate (%):");
         if (gstRate) {
-            fetch('http://localhost:5000/api/admin/gst-rate', {
+            fetch('https://main-faml.onrender.com/api/admin/gst-rate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ gstRate: parseFloat(gstRate) })
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     window.displayGSTRate = function () {
-        fetch('http://localhost:5000/api/admin/gst-rate')
+        fetch('https://main-faml.onrender.com/api/admin/gst-rate')
             .then(response => response.json())
             .then(gstRate => {
                 document.getElementById("currentGSTRate").textContent = `Current GST Rate: ${gstRate}%`;
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     window.exportToExcel = function () {
-        fetch('http://localhost:5000/api/entries')
+        fetch('https://main-faml.onrender.com/api/entries')
             .then(response => response.json())
             .then(entries => {
                 if (entries.length === 0) {
@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.clearEntries = function () {
         if (confirm("Are you sure you want to clear all entries? This action cannot be undone.")) {
-            fetch('http://localhost:5000/api/entries', { method: 'DELETE' })
+            fetch('https://main-faml.onrender.com/api/entries', { method: 'DELETE' })
                 .then(response => {
                     if (response.status === 204) return null;
                     return response.json();
