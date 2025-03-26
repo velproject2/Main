@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 console.log('MongoDB URI:', process.env.MONGO_URI); // Debug log
 
 // Middleware setup
-app.use(cors({ origin: 'http://127.0.0.1:5500' }));
+app.use(cors({ origin: 'https://track-entry.netlify.app' }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
