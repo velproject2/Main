@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 entry.checkInTime = new Date(`${checkInDate}T${checkInTime}`).toLocaleString();
             }
 
-            fetch('https://trackex.onrender.com/checkin', {
+            fetch('https://trackex.onrender.com/api/checkin', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(entry)
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             let entry = { apxNumber, checkOutTime }; // Only send necessary fields
     
-            fetch('https://trackex.onrender.com/checkout', {
+            fetch('https://trackex.onrender.com/api/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(entry)
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     window.displayDashboardEntries = function () {
-        fetch('https://trackex.onrender.com/entries')
+        fetch('https://trackex.onrender.com/api/entries')
             .then(response => response.json())
             .then(entries => {
                 const dashboardTableBody = document.getElementById("dashboardTableBody");
@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         if (confirm(`Are you sure you want to delete ${selected.length} entries?`)) {
-            fetch('https://trackex.onrender.com/delete-selected', {
+            fetch('https://trackex.onrender.com/api/delete-selected', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ entries: selected }) // Send array of { apxNumber, checkInTime }
@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const searchValue = document.getElementById("searchApx").value.toLowerCase();
         const filterTime = document.getElementById("filterTime").value;
 
-        fetch('https://trackex.onrender.com/entries')
+        fetch('https://trackex.onrender.com/api/entries')
             .then(response => response.json())
             .then(entries => {
                 let filteredEntries = entries.filter(entry => 
@@ -297,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch('https://trackex.onrender.com/admin/track-prices')
+        fetch('https://trackex.onrender.com/api/admin/track-prices')
             .then(response => response.json())
             .then(prices => {
                 subTrackTable.style.display = "table";
@@ -324,7 +324,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            fetch('https://trackex.onrender.com/admin/track-prices', {
+            fetch('https://trackex.onrender.com/api/admin/track-prices', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ track, subTrack, price: priceValue })
@@ -344,7 +344,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.setGSTRate = function () {
         const gstRate = prompt("Enter GST rate (%):");
         if (gstRate) {
-            fetch('https://trackex.onrender.com/admin/gst-rate', {
+            fetch('https://trackex.onrender.com/api/admin/gst-rate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ gstRate: parseFloat(gstRate) })
@@ -362,7 +362,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     window.displayGSTRate = function () {
-        fetch('https://trackex.onrender.com/admin/gst-rate')
+        fetch('https://trackex.onrender.com/api/admin/gst-rate')
             .then(response => response.json())
             .then(gstRate => {
                 document.getElementById("currentGSTRate").textContent = `Current GST Rate: ${gstRate}%`;
@@ -371,7 +371,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     window.exportToExcel = function () {
-        fetch('https://trackex.onrender.com/entries')
+        fetch('https://trackex.onrender.com/api/entries')
             .then(response => response.json())
             .then(entries => {
                 if (entries.length === 0) {
@@ -400,7 +400,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.clearEntries = function () {
         if (confirm("Are you sure you want to clear all entries? This action cannot be undone.")) {
-            fetch('https://trackex.onrender.com/entries', { method: 'DELETE' })
+            fetch('https://trackex.onrender.com/api/entries', { method: 'DELETE' })
                 .then(response => {
                     if (response.status === 204) return null;
                     return response.json();
