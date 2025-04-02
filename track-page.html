@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Operations</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container operation-container">
+        <h1 id="trackHeading">Track Operations</h1>
+        <div class="button-group">
+            <button class="track-button" onclick="goTo('checkin-automate.html')">Check-In Automate</button>
+            <button class="track-button" onclick="goTo('checkin-manual.html')">Check-In Manual</button>
+            <button class="track-button" onclick="location.href='index.html'">Go Back</button>
+        </div>
+    </div>
+    <script src="./app.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const track = urlParams.get('track');
+        document.getElementById('trackHeading').textContent = `${track} Operations`;
+        function goTo(page) {
+            location.href = `${page}?track=${track}`;
+        }
+    </script>
+</body>
+</html>
