@@ -3,7 +3,7 @@ class Entry {
     this.client = client;
   }
 
-  // Initialize the test_entries table
+  // Initialize the test_entries table (unchanged)
   async initialize() {
     try {
       await this.client.execute(
@@ -16,30 +16,30 @@ class Entry {
     }
   }
 
-  // Create a new entry with IST timestamp
+  // Create a new entry with SGT timestamp
   async createEntry({ apxNumber, modelName, track, trackNumber, driverName, email }) {
-    const checkInTimeIST = new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toString(); // UTC to IST
+    const checkInTimeSGT = new Date(Date.now() + (8 * 60 * 60 * 1000)).toString(); // UTC to SGT
     const query = `
       INSERT INTO test_entries (apxNumber, modelName, track, trackNumber, driverName, email, checkInTime)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
-    const params = [apxNumber, modelName, track, trackNumber, driverName, email, checkInTimeIST];
+    const params = [apxNumber, modelName, track, trackNumber, driverName, email, checkInTimeSGT];
     await this.client.execute(query, params, { prepare: true });
-    return { apxNumber, modelName, track, trackNumber, driverName, email, checkInTime: checkInTimeIST };
+    return { apxNumber, modelName, track, trackNumber, driverName, email, checkInTime: checkInTimeSGT };
   }
 
-  // Update checkout time with IST
+  // Update checkout time with SGT
   async updateCheckOut(apxNumber, checkInTime) {
-    const checkOutTimeIST = new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toString(); // UTC to IST
+    const checkOutTimeSGT = new Date(Date.now() + (8 * 60 * 60 * 1000)).toString(); // UTC to SGT
     const query = `
       UPDATE test_entries SET checkOutTime = ? WHERE apxNumber = ? AND checkInTime = ? IF EXISTS
     `;
-    const params = [checkOutTimeIST, apxNumber, checkInTime];
+    const params = [checkOutTimeSGT, apxNumber, checkInTime];
     const result = await this.client.execute(query, params, { prepare: true });
-    return { applied: result.rows[0]['[applied]'], checkOutTime: checkOutTimeIST };
+    return { applied: result.rows[0]['[applied]'], checkOutTime: checkOutTimeSGT };
   }
 
-  // Fetch all entries
+  // Fetch all entries (unchanged)
   async getAllEntries() {
     const query = 'SELECT * FROM test_entries';
     const result = await this.client.execute(query);
@@ -56,7 +56,7 @@ class Entry {
     }));
   }
 
-  // Delete entries
+  // Delete entries (unchanged)
   async deleteEntries(apxNumbers) {
     const query = 'DELETE FROM test_entries WHERE apxNumber = ? AND checkInTime IN (SELECT checkInTime FROM test_entries WHERE apxNumber = ?)';
     for (const apxNumber of apxNumbers) {
