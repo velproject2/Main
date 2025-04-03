@@ -24,17 +24,17 @@ async function connectToAstra() {
     console.log('Connected to Astra DB');
     await client.execute(`USE ${process.env.ASTRA_DB_KEYSPACE}`);
 
-    // Instantiate models
+    // Instantiate and initialize models (optional, keep for consistency)
     const entry = new Entry(client);
     const trackPrice = new TrackPrice(client);
     const gstRate = new GSTRate(client);
 
-    // Initialize tables
     await entry.initialize();
     await trackPrice.initialize();
     await gstRate.initialize();
 
-    module.exports.client = client; // Export client for routes
+    // Export client for routes
+    module.exports.client = client;
 
     const entryRoutes = require('./routes/entryRoutes');
     const adminRoutes = require('./routes/adminRoutes');
@@ -45,6 +45,7 @@ async function connectToAstra() {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   } catch (err) {
     console.error('Astra DB connection error:', err);
+    process.exit(1); // Exit on failure to prevent hanging
   }
 }
 
