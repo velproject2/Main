@@ -43,7 +43,7 @@ router.post('/checkin', async (req, res) => {
       return res.status(400).json({ message: 'This APX Number has an active check-in!' });
     }
 
-    const nowSGT = new Date(Date.now() + (8 * 60 * 60 * 1000));
+    const nowIST = new Date(Date.now() + (5.5 * 60 * 60 * 1000)); // UTC to IST
     const entry = {
       apxNumber,
       modelName,
@@ -51,7 +51,7 @@ router.post('/checkin', async (req, res) => {
       trackNumber,
       driverName,
       email,
-      checkInTime: checkInTime || nowSGT.toLocaleString('en-SG', { timeZone: 'Asia/Singapore' }),
+      checkInTime: checkInTime || nowIST.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
       checkOutTime: '',
       totalPrice: null
     };
@@ -90,8 +90,8 @@ router.post('/checkout', async (req, res) => {
     console.log('Found entry:', entry);
 
     const checkInTime = entry.checkintime;
-    const nowSGT = new Date(Date.now() + (8 * 60 * 60 * 1000));
-    const checkOut = checkOutTime || nowSGT.toLocaleString('en-SG', { timeZone: 'Asia/Singapore' });
+    const nowIST = new Date(Date.now() + (5.5 * 60 * 60 * 1000)); // UTC to IST
+    const checkOut = checkOutTime || nowIST.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
     const hoursUtilized = calculateHours(checkInTime, checkOut);
     const hoursBilled = Math.ceil(hoursUtilized);
 
@@ -152,11 +152,11 @@ router.post('/delete-selected', async (req, res) => {
     await client.batch(queries, { prepare: true });
     console.log(`Deleted ${entries.length} entries successfully`);
 
-    const nowSGT = new Date(Date.now() + (8 * 60 * 60 * 1000));
+    const nowIST = new Date(Date.now() + (5.5 * 60 * 60 * 1000)); // UTC to IST
     await sendEmail(
       process.env.ADMIN_EMAIL,
       'ALERT!!!\n TRACK ENTRIES DELETED..',
-      `The following ${entries.length} entries were deleted from the dashboard\n\nPerformed on: ${nowSGT.toLocaleString('en-SG', { timeZone: 'Asia/Singapore' })}\n${entries.map(entry => `APX Number: ${entry.apxNumber}, Check-In Time: ${entry.checkInTime}`).join('\n')}`
+      `The following ${entries.length} entries were deleted from the dashboard\n\nPerformed on: ${nowIST.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}\n${entries.map(entry => `APX Number: ${entry.apxNumber}, Check-In Time: ${entry.checkInTime}`).join('\n')}`
     );
 
     res.status(204).send();
