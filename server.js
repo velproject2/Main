@@ -23,9 +23,16 @@ async function connectToAstra() {
     await client.connect();
     console.log('Connected to Astra DB');
     await client.execute(`USE ${process.env.ASTRA_DB_KEYSPACE}`);
-    await Entry.initialize(client);
-    await TrackPrice.initialize(client);
-    await GSTRate.initialize(client);
+
+    // Instantiate models
+    const entry = new Entry(client);
+    const trackPrice = new TrackPrice(client);
+    const gstRate = new GSTRate(client);
+
+    // Initialize tables
+    await entry.initialize();
+    await trackPrice.initialize();
+    await gstRate.initialize();
 
     module.exports.client = client; // Export client for routes
 
@@ -41,7 +48,7 @@ async function connectToAstra() {
   }
 }
 
-app.use(cors()); 
+app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../Frontend')));
 app.use((req, res, next) => {
