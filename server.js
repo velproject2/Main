@@ -3,6 +3,9 @@ const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
 const { Client } = require('cassandra-driver');
+const Entry = require('./models/Entry');
+const TrackPrice = require('./models/TrackPrice');
+const GSTRate = require('./models/GSTRate');
 
 console.log('Starting server...');
 dotenv.config();
@@ -21,23 +24,10 @@ async function connectToAstra() {
     console.log('Connected to Astra DB');
     await client.execute(`USE ${process.env.ASTRA_DB_KEYSPACE}`);
 
-    // Initialize test_entries table
-    await client.execute(
-      'CREATE TABLE IF NOT EXISTS test_entries (apxNumber text, modelName text, track text, trackNumber text, driverName text, email text, checkInTime text, checkOutTime text, totalPrice double, PRIMARY KEY (apxNumber, checkInTime))'
-    );
-    console.log('test_entries table initialized');
-
-    // Initialize track_prices table
-    await client.execute(
-      'CREATE TABLE IF NOT EXISTS track_prices (track text, subTrack text, price double, PRIMARY KEY (track, subTrack))'
-    );
-    console.log('track_prices table initialized');
-
-    // Initialize gst_rate table
-    await client.execute(
-      'CREATE TABLE IF NOT EXISTS gst_rate (id text PRIMARY KEY, rate double)'
-    );
-    console.log('gst_rate table initialized');
+    // Initialize tables using function-based models
+    await Entry.initialize(client);
+    await TrackPrice.initialize(client);
+    await GSTRate.initialize(client);
 
     // Export client for routes
     module.exports.client = client;
@@ -51,7 +41,7 @@ async function connectToAstra() {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   } catch (err) {
     console.error('Astra DB connection error:', err);
-    process.exit(1); // Exit on failure
+    process.exit(1);
   }
 }
 
