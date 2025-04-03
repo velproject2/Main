@@ -41,7 +41,7 @@ async function connectToAstra() {
   }
 }
 
-app.use(cors()); // Allow all origins for simplicity; adjust as needed
+app.use(cors({ origin: 'https://trackex-vel.netlify.app' })); 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../Frontend')));
 app.use((req, res, next) => {
