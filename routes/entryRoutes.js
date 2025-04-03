@@ -50,7 +50,7 @@ router.post('/checkin', async (req, res) => {
       trackNumber,
       driverName,
       email,
-      checkInTime: checkInTime || new Date().toLocaleString(),
+      checkInTime: checkInTime || new Date(Date.now() + (8 * 60 * 60 * 1000)).toLocaleString('en-SG', { timeZone: 'Asia/Singapore' }),
       checkOutTime: '',
       totalPrice: null
     };
@@ -89,7 +89,7 @@ router.post('/checkout', async (req, res) => {
     console.log('Found entry:', entry);
 
     const checkInTime = entry.checkintime;
-    const checkOut = checkOutTime || new Date().toLocaleString();
+    const checkOut = checkOutTime || new Date(Date.now() + (8 * 60 * 60 * 1000)).toLocaleString('en-SG', { timeZone: 'Asia/Singapore' });
     const hoursUtilized = calculateHours(checkInTime, checkOut);
     const hoursBilled = Math.ceil(hoursUtilized);
 
@@ -153,7 +153,7 @@ router.post('/delete-selected', async (req, res) => {
     await sendEmail(
       process.env.ADMIN_EMAIL,
       'ALERT!!!\n TRACK ENTRIES DELETED..',
-      `The following ${entries.length} entries were deleted from the dashboard\n\nPerformed on: ${new Date().toLocaleString()}\n${entries.map(entry => `APX Number: ${entry.apxNumber}, Check-In Time: ${entry.checkInTime}`).join('\n')}`
+      `The following ${entries.length} entries were deleted from the dashboard\n\nPerformed on: ${new Date(Date.now() + (8 * 60 * 60 * 1000)).toLocaleString('en-SG', { timeZone: 'Asia/Singapore' })}\n${entries.map(entry => `APX Number: ${entry.apxNumber}, Check-In Time: ${entry.checkInTime}`).join('\n')}`
     );
 
     res.status(204).send();
